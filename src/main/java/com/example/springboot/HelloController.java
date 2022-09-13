@@ -32,7 +32,7 @@ public class HelloController {
 
 	// Create a reservation
 	//POST person name, status = "reserved"z
-	@PostMapping()
+	@PostMapping("/TODO")
 	public void reservationCreated(@RequestBody ReservationDTO reservation){
 		reservationService.saveReservation(reservationDTOMapper.getReservation(reservation));
 	}
@@ -40,13 +40,13 @@ public class HelloController {
 	// Truck picked up for specific reservation
 	//status = "rented" 
 
-	@PostMapping()
+	@PostMapping("/TODO2")
 	public void reservationStarted(@RequestParam Long id){
 		reservationService.startReservation(id);
 	}
 
 
-	@PostMapping()
+	@PostMapping("/TODO3")
 	public void reservationCompleted(@RequestParam Long id){
 		reservationService.completeReservation(id);
 	}
