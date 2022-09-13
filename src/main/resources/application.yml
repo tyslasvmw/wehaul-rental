@@ -1,4 +1,4 @@
-spring: 
+spring:
   application:
     name: wehaul-rental
   cloud:
@@ -9,6 +9,23 @@ spring:
       bindings:
         reservationCreated:
           destination: reservation-created-topic
+  datasource:
+    name: mydb
+    url: jdbc:h2:mem:mydb
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+#    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.H2Dialect
+  sql:
+    init:
+      mode: embedded
+      platform: h2
+
 management:
   endpoints:
     web:
@@ -17,3 +34,4 @@ management:
   endpoint:
     health:
       show-details: always
+
