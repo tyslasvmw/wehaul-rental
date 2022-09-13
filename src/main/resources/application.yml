@@ -1,11 +1,19 @@
-spring:
+spring: 
   application:
-    name: tanzu-java-web-app
+    name: wehaul-rental
+  cloud:
+    stream:
+      default-binder: rabbit
+      default:
+        group: wehaul-rental
+      bindings:
+        reservationCreated:
+          destination: reservation-created-topic
 management:
   endpoints:
     web:
       exposure:
-        include: "*"  
+        include: "*"
   endpoint:
     health:
       show-details: always

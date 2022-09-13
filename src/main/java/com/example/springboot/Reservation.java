@@ -1,12 +1,11 @@
 package com.example.springboot;
 
 import javax.persistence.Entity;
-
-import org.springframework.data.annotation.Id;
+import javax.persistence.Id;
 
 @Entity
 public class Reservation {
-    
+
     @Id
     private Long id;
     private Long truckId;
@@ -18,7 +17,6 @@ public class Reservation {
         this.truckId = truckId;
         this.reservationStatus = reservationStatus;
     }
-
 
     public static Reservation makeNewReservation(Long truckId) {
         Reservation reservation = new Reservation(truckId, "PENDING");
@@ -44,6 +42,5 @@ public class Reservation {
     public String getReservationStatus() {
         return reservationStatus;
     }
-
 
 }
