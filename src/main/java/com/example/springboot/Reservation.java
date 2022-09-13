@@ -14,7 +14,7 @@ public class Reservation {
 
     
 
-    private Reservation(Long truckId, String reservationStatus) {
+    public Reservation(Long truckId, String reservationStatus) {
         this.truckId = truckId;
         this.reservationStatus = reservationStatus;
     }
@@ -25,6 +25,13 @@ public class Reservation {
         return reservation;
     }
 
+    public void startReservation(){
+        this.reservationStatus = "STARTED";
+    }
+
+    public void completeReservation(){
+        this.reservationStatus = "COMPLETED";
+    }
 
     public Long getId() {
         return id;
