@@ -5,7 +5,9 @@ spring:
     stream:
       bindings:
         reservationCreated-out-0:
-          destination: reservation-created-topic
+          destination: reservation-created
+        reservationStarted-out-0:
+          destination: reservation-started
 
   datasource:
     name: mydb
