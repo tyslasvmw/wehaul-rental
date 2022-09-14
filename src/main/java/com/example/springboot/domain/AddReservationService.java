@@ -24,7 +24,7 @@ public class AddReservationService {
         Reservation reservation = Reservation.makeNewReservation(addReservationCommand.getTruckId());
         Long reservationId = datasource.addReservation(reservation);
 
-        streamBridge.send("reservationCreated-out-0", reservationId);
+        streamBridge.send("reservationCreated-out-0", reservation.getTruckId());
 
         return reservationId;
     }

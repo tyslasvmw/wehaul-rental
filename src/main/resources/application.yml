@@ -2,12 +2,18 @@ spring:
   application:
     name: wehaul-rental
   cloud:
+    function:
+      definition: truckAdded
     stream:
       bindings:
         reservationCreated-out-0:
           destination: reservation-created
         reservationStarted-out-0:
           destination: reservation-started
+        reservationEnded-out-0:
+          destination: reservation-ended
+        truckAdded-in-0:
+          destination: truck-added
 
   datasource:
     name: mydb

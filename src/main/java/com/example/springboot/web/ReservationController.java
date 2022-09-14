@@ -63,9 +63,8 @@ public class ReservationController {
 	// Truck picked up for specific reservation
 	//status = "rented"
 
-	@PostMapping("/start")
-	public void reservationStarted(StartReservationUseCase.StartReservationCommand cmd) {
-		Long id = startReservationService.startReservation(cmd);
+	@PostMapping("/{id}/start")
+	public void reservationStarted(@PathVariable Long id) {
 		reservationService.startReservation(id);
 	}
 

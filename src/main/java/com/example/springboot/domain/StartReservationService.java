@@ -16,10 +16,15 @@ public class StartReservationService implements StartReservationUseCase {
         this.datasource = datasource;
         this.streamBridge = streamBridge;
     }
+//
+//    @Override
+//    public Long startReservation(Long id) {
+////        datasource
+//        return null;
+//    }
 
     @Override
     public Long startReservation(StartReservationCommand startReservationCommand) {
-//        datasource
         return null;
     }
 }
