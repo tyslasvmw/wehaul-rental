@@ -2,6 +2,7 @@ package com.example.springboot.domain;
 
 import java.util.Optional;
 
+import com.example.springboot.TruckEvent;
 import com.example.springboot.persistence.ReservationEntity;
 import com.example.springboot.persistence.ReservationEntityMapper;
 import com.example.springboot.persistence.ReservationRepository;
@@ -14,8 +15,8 @@ import org.springframework.cloud.stream.function.StreamBridge;
 public class ReservationService {
 
     private final StreamBridge streamBridge;
-    private ReservationRepository reservationRepository;
-    private ReservationEntityMapper reservationEntityMapper;
+    private final ReservationRepository reservationRepository;
+    private final ReservationEntityMapper reservationEntityMapper;
 
     @Autowired
     public ReservationService(ReservationRepository reservationRepository, ReservationEntityMapper reservationEntityMapper, StreamBridge streamBridge) {
@@ -32,7 +33,7 @@ public class ReservationService {
         reservation.startReservation();
 
         reservationRepository.save(reservationEntityMapper.getReservationEntity(reservation));
-        streamBridge.send("reservationStarted-out-0", reservation.getTruckId());
+        streamBridge.send("reservationStarted-out-0", new TruckEvent(reservation.getTruckId()));
     }
 
     public void completeReservation(Long reservationId) {
@@ -43,14 +44,14 @@ public class ReservationService {
         reservation.completeReservation();
 
         reservationRepository.save(reservationEntityMapper.getReservationEntity(reservation));
-        streamBridge.send("reservationEnded-out-0", reservation.getTruckId());
+        streamBridge.send("reservationEnded-out-0", new TruckEvent(reservation.getTruckId()));
     }
 
     public Long addReservation(Long truckId) {
         Reservation reservation = Reservation.makeNewReservation(truckId);
         ReservationEntity reservationEntity = reservationRepository.save(reservationEntityMapper.getReservationEntity(reservation));
 
-        streamBridge.send("reservationCreated-out-0", reservationEntity.getTruckId());
+        streamBridge.send("reservationCreated-out-0", new TruckEvent(reservationEntity.getTruckId()));
 
         return reservationEntity.getTruckId();
     }
