@@ -3,12 +3,10 @@ spring:
     name: wehaul-rental
   cloud:
     stream:
-      default-binder: rabbit
-      default:
-        group: wehaul-rental
       bindings:
-        reservationCreated:
+        reservationCreated-out-0:
           destination: reservation-created-topic
+
   datasource:
     name: mydb
     url: jdbc:h2:mem:mydb
@@ -34,4 +32,11 @@ management:
   endpoint:
     health:
       show-details: always
+
+logging:
+  level:
+    org:
+      springframework:
+        cloud: DEBUG
+        integration: DEBUG
 

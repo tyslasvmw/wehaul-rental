@@ -16,6 +16,7 @@ public class ReservationService {
     private ReservationRepository reservationRepository;
     private ReservationEntityMapper reservationEntityMapper;
 
+
     @Autowired
     public ReservationService(ReservationRepository reservationRepository, ReservationEntityMapper reservationEntityMapper, StreamBridge streamBridge) {
         this.reservationRepository = reservationRepository;
@@ -31,6 +32,10 @@ public class ReservationService {
         reservation.startReservation();
 
         reservationRepository.save(reservationEntityMapper.getReservationEntity(reservation));
+    }
+
+    public void reservationCreated() {
+        streamBridge.send("reservationCreated-out-0", "HI FRIENDS I SENT A MESSAGE");
     }
 
     public void completeReservation(Long reservationId){

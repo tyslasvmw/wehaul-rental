@@ -69,6 +69,11 @@ public class ReservationController {
 		reservationService.startReservation(id);
 	}
 
+	@GetMapping("/publish")
+	public void reservationCreated() {
+		reservationService.reservationCreated();
+	}
+
 
 	@PostMapping("/complete/{id}")
 	public void reservationCompleted(@PathVariable Long id) {
