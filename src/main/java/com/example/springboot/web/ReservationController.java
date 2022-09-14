@@ -69,7 +69,7 @@ public class ReservationController {
 		reservationService.startReservation(id);
 	}
 
-	@PostMapping("/complete/{id}")
+	@PostMapping("/{id}/complete")
 	public void reservationCompleted(@PathVariable Long id) {
 		reservationService.completeReservation(id);
 	}
