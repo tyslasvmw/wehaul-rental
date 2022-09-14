@@ -1,8 +1,10 @@
 package com.example.springboot.web;
 
+import com.example.springboot.domain.AddReservationService;
 import com.example.springboot.domain.GetReservationsService;
 import com.example.springboot.domain.ReservationService;
-import com.example.springboot.port.incoming.AddReservationUseCase;
+import com.example.springboot.domain.StartReservationService;
+import com.example.springboot.port.incoming.StartReservationUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,15 +24,21 @@ import java.util.stream.Collectors;
 public class ReservationController {
 
 	private final ReservationService reservationService;
-	private final AddReservationUseCase addReservationUseCase;
+	private final AddReservationService addReservationService;
 	private final GetReservationsService getReservationsService;
+	private final StartReservationService startReservationService;
 	private final ReservationDTOMapper mapper;
 
 	@Autowired
-	public ReservationController(ReservationService reservationService, AddReservationUseCase addReservationUseCase, GetReservationsService getReservationsService, ReservationDTOMapper mapper) {
+	public ReservationController(ReservationService reservationService,
+								 AddReservationService addReservationService,
+								 GetReservationsService getReservationsService,
+								 StartReservationService startReservationService,
+								 ReservationDTOMapper mapper) {
 		this.reservationService = reservationService;
-		this.addReservationUseCase = addReservationUseCase;
+		this.addReservationService = addReservationService;
 		this.getReservationsService = getReservationsService;
+		this.startReservationService = startReservationService;
 		this.mapper = mapper;
 	}
 
@@ -46,8 +54,8 @@ public class ReservationController {
 	// Create a reservation
 	//POST person name, status = "reserved"z
 	@PostMapping
-	public ResponseEntity<Void> reservationCreated(@RequestBody AddReservationUseCase.AddReservationCommand cmd) {
-		Long reservationId = addReservationUseCase.addReservation(cmd);
+	public ResponseEntity<Void> reservationCreated(@RequestBody AddReservationCommand cmd) {
+		Long reservationId = addReservationService.addReservation(cmd);
 		return ResponseEntity.created(ServletUriComponentsBuilder
 				.fromCurrentRequest().path("/{id}").buildAndExpand(reservationId).toUri()).build();
 	}
@@ -55,14 +63,15 @@ public class ReservationController {
 	// Truck picked up for specific reservation
 	//status = "rented"
 
-	@PostMapping("/start/{id}")
-	public void reservationStarted(@PathVariable Long id){
+	@PostMapping("/start")
+	public void reservationStarted(StartReservationUseCase.StartReservationCommand cmd) {
+		Long id = startReservationService.startReservation(cmd);
 		reservationService.startReservation(id);
 	}
 
 
 	@PostMapping("/complete/{id}")
-	public void reservationCompleted(@PathVariable Long id){
+	public void reservationCompleted(@PathVariable Long id) {
 		reservationService.completeReservation(id);
 	}
 

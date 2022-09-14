@@ -1,7 +1,6 @@
 package com.example.springboot.domain;
 
 import com.example.springboot.persistence.ReservationDatasourceAdapter;
-import com.example.springboot.port.incoming.AddReservationUseCase;
 import com.example.springboot.port.incoming.StartReservationUseCase;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Component;
@@ -20,17 +19,7 @@ public class StartReservationService implements StartReservationUseCase {
 
     @Override
     public Long startReservation(StartReservationCommand startReservationCommand) {
-
+//        datasource
         return null;
     }
-
-//    @Override
-//    public Long addReservation(AddReservationCommand addReservationCommand) {
-//        Reservation reservation = Reservation.makeNewReservation(addReservationCommand.getTruckId());
-//        Long reservationId = datasource.addReservation(reservation);
-//
-////        streamBridge.send("reservationCreated", reservationId);
-//
-//        return reservationId;
-//    }
 }

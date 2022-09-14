@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 public class ReservationDatasourceAdapter implements AddReservationDatasourcePort,
         GetReservationsDatasourcePort {
     private ReservationRepository reservationRepository;
+//    private ReservationEventRepository reservationEventRepository;
     private ReservationEntityMapper mapper;
 
     public ReservationDatasourceAdapter(ReservationRepository reservationRepository, ReservationEntityMapper mapper) {
@@ -22,6 +23,8 @@ public class ReservationDatasourceAdapter implements AddReservationDatasourcePor
     @Override
     public Long addReservation(Reservation reservation) {
         ReservationEntity entity = reservationRepository.save(mapper.getReservationEntity(reservation));
+        // TODO: introduce mapper to handle entity to event mapping
+//        reservationEventRepository.save(new ReservationEventEntity(entity.getTruckId()))
         return entity.getId();
     }
 

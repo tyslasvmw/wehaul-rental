@@ -1,7 +1,6 @@
 package com.example.springboot.domain;
 
 import com.example.springboot.persistence.ReservationDatasourceAdapter;
-import com.example.springboot.port.incoming.AddReservationUseCase;
 import com.example.springboot.port.incoming.GetAllReservationsUseCase;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Component;
