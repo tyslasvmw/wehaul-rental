@@ -14,7 +14,6 @@ spring:
     password: password
     driverClassName: org.h2.Driver
   jpa:
-#    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
     generate-ddl: true
     hibernate:
       ddl-auto: create-drop

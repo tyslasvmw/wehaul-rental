@@ -11,7 +11,7 @@ public class Reservation {
     private ReservationStatus status;
 
     public enum ReservationStatus {
-        PENDING, STARTED, COMPLETED
+        CREATED, STARTED, COMPLETED
     }
 
     private Reservation(Long truckId, ReservationStatus status) {
@@ -20,7 +20,7 @@ public class Reservation {
     }
 
     public static Reservation makeNewReservation(Long truckId) {
-        return new Reservation(truckId, ReservationStatus.PENDING);
+        return new Reservation(truckId, ReservationStatus.CREATED);
     }
 
     public void startReservation() {
