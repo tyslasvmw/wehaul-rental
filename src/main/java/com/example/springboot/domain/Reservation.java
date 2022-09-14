@@ -20,14 +20,17 @@ public class Reservation {
     }
 
     public static Reservation makeNewReservation(Long truckId) {
+        // TODO: check that this is a valid state transition
         return new Reservation(truckId, ReservationStatus.CREATED);
     }
 
     public void startReservation() {
+        // TODO: check that this is a valid state transition
         this.status = ReservationStatus.STARTED;
     }
 
     public void completeReservation() {
+        // TODO: check that this is a valid state transition
         this.status = ReservationStatus.COMPLETED;
     }
 }
