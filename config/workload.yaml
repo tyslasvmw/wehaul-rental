@@ -11,6 +11,12 @@ spec:
     value:
       autoscaling.knative.dev/minScale: "1"
   serviceClaims:
+    - name: db
+      ref:
+        apiVersion: sql.tanzu.vmware.com/v1
+        kind: Postgres
+        name: postgres-tap-hack-1
+        namespace: default
     - name: rabbitmq
       ref:
         apiVersion: services.apps.tanzu.vmware.com/v1alpha1
