@@ -10,6 +10,12 @@ spec:
   - name: annotations
     value:
       autoscaling.knative.dev/minScale: "1"
+  serviceClaims:
+    - name: rabbitmq
+      ref:
+        apiVersion: v1beta1
+        kind: RabbitmqCluster
+        name: rmq-1
   source:
     git:
       url: https://github.com/sample-accelerators/wehaul-rental
