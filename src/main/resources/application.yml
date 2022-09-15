@@ -3,7 +3,7 @@ spring:
     name: wehaul-rental
   cloud:
     function:
-      definition: truckAdded
+      definition: truckAdded, truckInspectionStarted, truckInspectionCompleted
     stream:
       bindings:
         reservationCreated-out-0:
@@ -14,6 +14,10 @@ spring:
           destination: reservation-ended
         truckAdded-in-0:
           destination: truck-added
+        truckInspectionStarted-in-0:
+          destination: truck-inspection-started
+        truckInspectionCompleted-in-0:
+          destination: truck-inspection-completed
 
   datasource:
     name: mydb

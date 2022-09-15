@@ -59,4 +59,19 @@ public class ReservationService {
         streamBridge.send("reservationCreated-out-0", new TruckEvent(newReservation.getTruckId()));
     }
 
+    public void makeReservationNotRentable(Long truckId) {
+        List<ReservationEntity> reservationEntity = reservationRepository.findByTruckId(truckId);
+        if (reservationEntity.isEmpty()) throw new IllegalArgumentException();
+
+        Reservation reservation = reservationEntityMapper.getReservation(reservationEntity.get(0));
+        reservation.makeReservationNotRentable();
+    }
+
+    public void makeReservationAvailable(Long truckId) {
+        List<ReservationEntity> reservationEntity = reservationRepository.findByTruckId(truckId);
+        if (reservationEntity.isEmpty()) throw new IllegalArgumentException();
+
+        Reservation reservation = reservationEntityMapper.getReservation(reservationEntity.get(0));
+        reservation.makeReservationAvailable();
+    }
 }

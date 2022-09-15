@@ -11,7 +11,7 @@ public class Reservation {
     private ReservationStatus status;
 
     public enum ReservationStatus {
-        RENTABLE, RESERVED, RENTED
+        RENTABLE, RESERVED, RENTED, NOT_RENTABLE
     }
 
     private Reservation(Long truckId, ReservationStatus status) {
@@ -35,6 +35,14 @@ public class Reservation {
 
     public void completeReservation() {
         if (this.status != ReservationStatus.RENTED) throw new IllegalStateException();
+        this.status = ReservationStatus.RENTABLE;
+    }
+
+    public void makeReservationNotRentable() {
+        this.status = ReservationStatus.NOT_RENTABLE;
+    }
+
+    public void makeReservationAvailable() {
         this.status = ReservationStatus.RENTABLE;
     }
 }
