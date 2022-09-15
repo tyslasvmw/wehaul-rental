@@ -1,18 +1,15 @@
 package com.example.springboot.web;
 
-import com.example.springboot.domain.AddReservationService;
 import com.example.springboot.domain.GetReservationsService;
 import com.example.springboot.domain.ReservationService;
 import com.example.springboot.domain.StartReservationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
@@ -23,18 +20,15 @@ import java.util.stream.Collectors;
 public class ReservationController {
 
 	private final ReservationService reservationService;
-	private final AddReservationService addReservationService;
 	private final GetReservationsService getReservationsService;
 	private final StartReservationService startReservationService;
 	private final ReservationDTOMapper mapper;
 
 	public ReservationController(ReservationService reservationService,
-								 AddReservationService addReservationService,
 								 GetReservationsService getReservationsService,
 								 StartReservationService startReservationService,
 								 ReservationDTOMapper mapper) {
 		this.reservationService = reservationService;
-		this.addReservationService = addReservationService;
 		this.getReservationsService = getReservationsService;
 		this.startReservationService = startReservationService;
 		this.mapper = mapper;

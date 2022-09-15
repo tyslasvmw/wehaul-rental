@@ -4,12 +4,13 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
-import com.example.springboot.TruckEvent;
 import com.example.springboot.exception.NoReservationsAvailableException;
 import com.example.springboot.exception.TruckAlreadyExistsException;
 import com.example.springboot.persistence.ReservationEntity;
 import com.example.springboot.persistence.ReservationEntityMapper;
 import com.example.springboot.persistence.ReservationRepository;
+import com.example.springboot.persistence.RentalEventEntity;
+import com.example.springboot.persistence.RentalEventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.cloud.stream.function.StreamBridge;
@@ -17,15 +18,18 @@ import org.springframework.cloud.stream.function.StreamBridge;
 @Service
 public class ReservationService {
 
-    private final StreamBridge streamBridge;
     private final ReservationRepository reservationRepository;
+    private final RentalEventRepository rentalEventRepository;
     private final ReservationEntityMapper reservationEntityMapper;
+    private final StreamBridge streamBridge;
 
     @Autowired
     public ReservationService(ReservationRepository reservationRepository,
+                              RentalEventRepository rentalEventRepository,
                               ReservationEntityMapper reservationEntityMapper,
                               StreamBridge streamBridge) {
         this.reservationRepository = reservationRepository;
+        this.rentalEventRepository = rentalEventRepository;
         this.reservationEntityMapper = reservationEntityMapper;
         this.streamBridge = streamBridge;
     }
@@ -38,7 +42,9 @@ public class ReservationService {
         Reservation reservation = reservationEntityMapper.getReservation(availableReservations.get().get(0));
         reservation.bookReservation();
         reservationRepository.save(reservationEntityMapper.getReservationEntity(reservation));
-        streamBridge.send("reservationBooked-out-0", new TruckEvent(reservation.getTruckId(), Instant.now()));
+        saveRentalEvent(reservation);
+
+        streamBridge.send("reservationBooked-out-0", RentalEvent.makeRentalEvent(reservation));
         return reservation;
     }
 
@@ -47,7 +53,9 @@ public class ReservationService {
         reservation.startReservation();
 
         reservationRepository.save(reservationEntityMapper.getReservationEntity(reservation));
-        streamBridge.send("reservationStarted-out-0", new TruckEvent(reservation.getTruckId(), Instant.now()));
+        saveRentalEvent(reservation);
+
+        streamBridge.send("reservationStarted-out-0", RentalEvent.makeRentalEvent((reservation)));
     }
 
     public void completeReservation(Long reservationId) {
@@ -55,7 +63,9 @@ public class ReservationService {
         reservation.completeReservation();
 
         reservationRepository.save(reservationEntityMapper.getReservationEntity(reservation));
-        streamBridge.send("reservationEnded-out-0", new TruckEvent(reservation.getTruckId(), Instant.now()));
+        saveRentalEvent(reservation);
+
+        streamBridge.send("reservationEnded-out-0", RentalEvent.makeRentalEvent((reservation)));
     }
 
     public void addReservation(Long truckId) {
@@ -65,17 +75,18 @@ public class ReservationService {
         }
 
         Reservation reservation = Reservation.makeNewReservation(truckId);
-        ReservationEntity newReservation = reservationRepository.save(reservationEntityMapper.getReservationEntity(reservation));
+        ReservationEntity newReservationEntity = reservationRepository.save(reservationEntityMapper.getReservationEntity(reservation));
 
-        streamBridge.send("reservationCreated-out-0", new TruckEvent(newReservation.getTruckId(), Instant.now()));
+        streamBridge.send("reservationCreated-out-0", RentalEvent.makeRentalEvent(reservationEntityMapper.getReservation(newReservationEntity)));
     }
+
     public void makeReservationNotRentable(Long truckId) {
         Reservation reservation = getReservationByTruckId(truckId);
         reservation.makeReservationNotRentable();
         reservationRepository.save(reservationEntityMapper.getReservationEntity(reservation));
     }
 
-    public void makeReservationAvailable(Long truckId) {
+    public void makeReservationRentable(Long truckId) {
         Reservation reservation = getReservationByTruckId(truckId);
         reservation.makeReservationAvailable();
         reservationRepository.save(reservationEntityMapper.getReservationEntity(reservation));
@@ -93,5 +104,9 @@ public class ReservationService {
         if (reservationEntity.isEmpty()) throw new IllegalArgumentException();
 
         return reservationEntityMapper.getReservation(reservationEntity.get().get(0));
+    }
+
+    private void saveRentalEvent(Reservation reservation) {
+        rentalEventRepository.save(new RentalEventEntity(reservation.getTruckId(), reservation.getStatus().name(), Instant.now(), null));
     }
 }
