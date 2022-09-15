@@ -32,7 +32,7 @@ public class ReservationService {
 
     public Reservation bookReservation() {
         Optional<List<ReservationEntity>> availableReservations =
-                reservationRepository.findByStatus(Reservation.ReservationStatus.RENTABLE);
+                reservationRepository.findByStatus(Reservation.ReservationStatus.RENTABLE.name());
         if (availableReservations.isEmpty()) throw new NoReservationsAvailableException();
 
         Reservation reservation = reservationEntityMapper.getReservation(availableReservations.get().get(0));

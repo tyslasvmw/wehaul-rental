@@ -9,5 +9,5 @@ public interface ReservationRepository extends JpaRepository<ReservationEntity, 
 
     Optional<List<ReservationEntity>> findByTruckId(Long truckId);
 
-    Optional<List<ReservationEntity>> findByStatus(Reservation.ReservationStatus status);
+    Optional<List<ReservationEntity>> findByStatus(String status);
 }
