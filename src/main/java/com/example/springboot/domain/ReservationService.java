@@ -37,6 +37,7 @@ public class ReservationService {
 
         Reservation reservation = reservationEntityMapper.getReservation(availableReservations.get().get(0));
         reservation.bookReservation();
+        reservationRepository.save(reservationEntityMapper.getReservationEntity(reservation));
         streamBridge.send("reservationBooked-out-0", new TruckEvent(reservation.getTruckId(), Instant.now()));
         return reservation;
     }
