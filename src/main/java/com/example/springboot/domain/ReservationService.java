@@ -1,5 +1,6 @@
 package com.example.springboot.domain;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,7 +46,7 @@ public class ReservationService {
         reservation.startReservation();
 
         reservationRepository.save(reservationEntityMapper.getReservationEntity(reservation));
-        streamBridge.send("reservationStarted-out-0", new TruckEvent(reservation.getTruckId()));
+        streamBridge.send("reservationStarted-out-0", new TruckEvent(reservation.getTruckId(), Instant.now()));
     }
 
     public void completeReservation(Long reservationId) {
@@ -53,7 +54,7 @@ public class ReservationService {
         reservation.completeReservation();
 
         reservationRepository.save(reservationEntityMapper.getReservationEntity(reservation));
-        streamBridge.send("reservationEnded-out-0", new TruckEvent(reservation.getTruckId()));
+        streamBridge.send("reservationEnded-out-0", new TruckEvent(reservation.getTruckId(), Instant.now()));
     }
 
     public void addReservation(Long truckId) {
@@ -65,7 +66,7 @@ public class ReservationService {
         Reservation reservation = Reservation.makeNewReservation(truckId);
         ReservationEntity newReservation = reservationRepository.save(reservationEntityMapper.getReservationEntity(reservation));
 
-        streamBridge.send("reservationCreated-out-0", new TruckEvent(newReservation.getTruckId()));
+        streamBridge.send("reservationCreated-out-0", new TruckEvent(newReservation.getTruckId(), Instant.now()));
     }
     public void makeReservationNotRentable(Long truckId) {
         Reservation reservation = getReservationByTruckId(truckId);
