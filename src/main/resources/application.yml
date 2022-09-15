@@ -8,6 +8,8 @@ spring:
       bindings:
         reservationCreated-out-0:
           destination: reservation-created
+        reservationBooked-out-0:
+          destination: reservation-booked
         reservationStarted-out-0:
           destination: reservation-started
         reservationEnded-out-0:

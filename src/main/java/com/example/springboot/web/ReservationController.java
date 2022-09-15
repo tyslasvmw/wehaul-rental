@@ -4,7 +4,6 @@ import com.example.springboot.domain.AddReservationService;
 import com.example.springboot.domain.GetReservationsService;
 import com.example.springboot.domain.ReservationService;
 import com.example.springboot.domain.StartReservationService;
-import com.example.springboot.port.incoming.StartReservationUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -58,6 +57,13 @@ public class ReservationController {
 		Long reservationId = addReservationService.addReservation(cmd);
 		return ResponseEntity.created(ServletUriComponentsBuilder
 				.fromCurrentRequest().path("/{id}").buildAndExpand(reservationId).toUri()).build();
+	}
+
+	@PostMapping
+	public ResponseEntity<ReservationDTO> reservationBooked() {
+		ReservationDTO dto = mapper.getReservationDTO(reservationService.bookReservation());
+		return ResponseEntity.created(ServletUriComponentsBuilder
+				.fromCurrentRequest().path("/{id}").buildAndExpand(dto).toUri()).build();
 	}
 
 	// Truck picked up for specific reservation
