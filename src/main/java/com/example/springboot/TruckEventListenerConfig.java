@@ -19,10 +19,7 @@ public class TruckEventListenerConfig {
     @Bean
     public Consumer<TruckEvent> truckAdded(){
 
-        return truckEvent -> {
-            reservationService.addReservation(truckEvent.getTruckId());
-        };
-
+        return truckEvent -> reservationService.addReservation(truckEvent.getTruckId());
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.springboot.domain;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.example.springboot.TruckEvent;
@@ -48,10 +49,14 @@ public class ReservationService {
     }
 
     public void addReservation(Long truckId) {
+        // check that reservation does not already exist
+        List<ReservationEntity> reservationEntities = reservationRepository.findByTruckId(truckId);
+        
         Reservation reservation = Reservation.makeNewReservation(truckId);
-        ReservationEntity reservationEntity = reservationRepository.save(reservationEntityMapper.getReservationEntity(reservation));
 
-        streamBridge.send("reservationCreated-out-0", new TruckEvent(reservationEntity.getTruckId()));
+        ReservationEntity newReservation = reservationRepository.save(reservationEntityMapper.getReservationEntity(reservation));
+
+        streamBridge.send("reservationCreated-out-0", new TruckEvent(newReservation.getTruckId()));
     }
 
 }
