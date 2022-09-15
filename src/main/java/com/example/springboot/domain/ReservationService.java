@@ -67,7 +67,6 @@ public class ReservationService {
         Reservation reservation = Reservation.makeNewReservation(truckId);
         ReservationEntity newReservation = reservationRepository.save(reservationEntityMapper.getReservationEntity(reservation));
 
-        streamBridge.send("reservationCreated-out-0", new TruckEvent(newReservation.getTruckId(), Instant.now()));
     }
     public void makeReservationNotRentable(Long truckId) {
         Reservation reservation = getReservationByTruckId(truckId);
