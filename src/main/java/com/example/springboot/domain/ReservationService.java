@@ -47,13 +47,11 @@ public class ReservationService {
         streamBridge.send("reservationEnded-out-0", new TruckEvent(reservation.getTruckId()));
     }
 
-    public Long addReservation(Long truckId) {
+    public void addReservation(Long truckId) {
         Reservation reservation = Reservation.makeNewReservation(truckId);
         ReservationEntity reservationEntity = reservationRepository.save(reservationEntityMapper.getReservationEntity(reservation));
 
         streamBridge.send("reservationCreated-out-0", new TruckEvent(reservationEntity.getTruckId()));
-
-        return reservationEntity.getTruckId();
     }
 
 }
