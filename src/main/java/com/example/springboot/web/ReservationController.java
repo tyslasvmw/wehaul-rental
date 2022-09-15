@@ -28,7 +28,6 @@ public class ReservationController {
 	private final StartReservationService startReservationService;
 	private final ReservationDTOMapper mapper;
 
-	@Autowired
 	public ReservationController(ReservationService reservationService,
 								 AddReservationService addReservationService,
 								 GetReservationsService getReservationsService,
@@ -41,33 +40,12 @@ public class ReservationController {
 		this.mapper = mapper;
 	}
 
-	//TRUCK Creation Event
-	//status = "rentable"
-
-	//TRUCK inspected event
-	//status = "not rentable"
-
-	//TRUCk finished inspection event
-	//status = "rentable"
-
-	// Create a reservation
-	//POST person name, status = "reserved"z
-	@PostMapping
-	public ResponseEntity<Void> reservationCreated(@RequestBody AddReservationCommand cmd) {
-		Long reservationId = addReservationService.addReservation(cmd);
-		return ResponseEntity.created(ServletUriComponentsBuilder
-				.fromCurrentRequest().path("/{id}").buildAndExpand(reservationId).toUri()).build();
-	}
-
 	@PostMapping
 	public ResponseEntity<ReservationDTO> reservationBooked() {
 		ReservationDTO dto = mapper.getReservationDTO(reservationService.bookReservation());
 		return ResponseEntity.created(ServletUriComponentsBuilder
 				.fromCurrentRequest().path("/{id}").buildAndExpand(dto).toUri()).build();
 	}
-
-	// Truck picked up for specific reservation
-	//status = "rented"
 
 	@PostMapping("/{id}/start")
 	public void reservationStarted(@PathVariable Long id) {
@@ -89,8 +67,4 @@ public class ReservationController {
 				.contentType(MediaType.APPLICATION_JSON)
 				.body(reservations);
 	}
-
-
-	//  returned call.
-	//status= "rentable"
 }
