@@ -71,11 +71,13 @@ public class ReservationService {
     public void makeReservationNotRentable(Long truckId) {
         Reservation reservation = getReservationByTruckId(truckId);
         reservation.makeReservationNotRentable();
+        reservationRepository.save(reservationEntityMapper.getReservationEntity(reservation));
     }
 
     public void makeReservationAvailable(Long truckId) {
         Reservation reservation = getReservationByTruckId(truckId);
         reservation.makeReservationAvailable();
+        reservationRepository.save(reservationEntityMapper.getReservationEntity(reservation));
     }
 
     private Reservation getReservationById(Long reservationId) {
