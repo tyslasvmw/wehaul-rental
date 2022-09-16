@@ -23,10 +23,14 @@ public class RentalEventEntity {
     public RentalEventEntity() {
     }
 
-    public RentalEventEntity(Long truckId, String type, Instant created, Instant published) {
+    private RentalEventEntity(Long truckId, String type, Instant created, Instant published) {
         this.truckId = truckId;
         this.type = type;
         this.created = created;
         this.published = published;
+    }
+
+    public static RentalEventEntity makeRentalEventEntity(Long truckId, String type) {
+        return new RentalEventEntity(truckId, type, Instant.now(), null);
     }
 }

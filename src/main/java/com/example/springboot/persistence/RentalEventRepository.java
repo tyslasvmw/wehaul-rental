@@ -6,5 +6,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RentalEventRepository extends JpaRepository<RentalEventEntity, Long> {
-    Optional<List<RentalEventEntity>> findByPublishedIsNull();
+    Optional<List<RentalEventEntity>> findByPublishedIsNullAndTypeIsNot(String type);
+    Optional<List<RentalEventEntity>> findByPublishedIsNullAndTypeIs(String type);
 }
