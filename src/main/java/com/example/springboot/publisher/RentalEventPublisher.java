@@ -30,19 +30,19 @@ public class RentalEventPublisher {
     public void publishReactionToFleetEvent() {
         Optional<List<RentalEventEntity>> unpublishedEvents = rentalEventRepository.findByPublishedIsNullAndTypeIs("CREATED");
 
-        unpublishedEvents.ifPresent(rentalEventEntities -> rentalEventEntities
-                .forEach(eventEntity -> streamBridge
-                        .send("reservationCreated-out-0", RentalEvent.makeRentalEventFromEntity(eventEntity))));
+        unpublishedEvents.ifPresent(addEvents -> addEvents
+                .forEach(event -> streamBridge
+                        .send("reservationCreated-out-0", RentalEvent.makeRentalEventFromEntity(event))));
     }
 
     @Scheduled(fixedRate = 60000)
     public void publishRentalEvent() {
         Optional<List<RentalEventEntity>> unpublishedEvents = rentalEventRepository.findByPublishedIsNullAndTypeIsNot("CREATED");
 
-        unpublishedEvents.ifPresent(rentalEventEntities ->
-                rentalEventEntities.forEach(eventEntity -> {
-                    String exchangeName = exchangeMap.get(Reservation.ReservationStatus.valueOf(eventEntity.getType()));
-                    streamBridge.send(exchangeName, RentalEvent.makeRentalEventFromEntity(eventEntity));
+        unpublishedEvents.ifPresent(rentalEvents ->
+                rentalEvents.forEach(event -> {
+                    String exchangeName = exchangeMap.get(Reservation.ReservationStatus.valueOf(event.getType()));
+                    streamBridge.send(exchangeName, RentalEvent.makeRentalEventFromEntity(event));
                 }));
     }
 
